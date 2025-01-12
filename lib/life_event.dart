@@ -7,7 +7,8 @@ class LifeEvent {
     required this.count,
   });
 
-int id = 0;
+  int id = 0;
+  
   // イベント名
   String title;
 
