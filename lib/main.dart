@@ -59,6 +59,43 @@ class _LifeCounterPageState extends State<LifeCounterPage> {
           return Text(lifeEvent.title);
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        // 画面遷移
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) {
+                return const AddLifeEventPage();
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class AddLifeEventPage extends StatefulWidget {
+  const AddLifeEventPage({super.key});
+
+  @override
+  State<AddLifeEventPage> createState() => _AddLifeEventPageState();
+}
+
+class _AddLifeEventPageState extends State<AddLifeEventPage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('ライフイベント追加'),
+      ),
+      body: TextFormField(
+        onFieldSubmitted: (text) {
+          final lifeEvent = LifeEvent(title: text, count: 0); // インスタンス作成
+          Navigator.of(context).pop(lifeEvent); // 前のページにインスタンスを渡す
+        },
+      ),
     );
   }
 }
