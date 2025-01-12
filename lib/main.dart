@@ -35,6 +35,10 @@ class _LifeCounterPageState extends State<LifeCounterPage> {
   Future<void> initialize() async {
     store = await openStore();
     lifeEventBox = store?.box<LifeEvent>();
+    fetchLifeEvents();
+  }
+
+  void fetchLifeEvents() {
     lifeEvents = lifeEventBox?.getAll() ?? [];
     setState(() {});
   }
@@ -62,14 +66,20 @@ class _LifeCounterPageState extends State<LifeCounterPage> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         // 画面遷移
-        onPressed: () {
-          Navigator.of(context).push(
+        onPressed: () async {
+          final newLifeEvent = await Navigator.of(context).push<LifeEvent>(
             MaterialPageRoute(
               builder: (context) {
                 return const AddLifeEventPage();
               },
             ),
           );
+          if (newLifeEvent != null) {
+            // ObjectBox に保存
+            lifeEventBox?.put(newLifeEvent);
+            // もう一度LifeEvent一覧を取得
+            fetchLifeEvents();
+          }
         },
       ),
     );
