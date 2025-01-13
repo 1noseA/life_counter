@@ -77,6 +77,7 @@ class _LifeCounterPageState extends State<LifeCounterPage> {
                     fontSize: 16,
                   ),
                 ),
+                // プラスボタン
                 IconButton(
                   onPressed: () {
                     lifeEvent.count++;
@@ -84,6 +85,14 @@ class _LifeCounterPageState extends State<LifeCounterPage> {
                     fetchLifeEvents();
                   },
                   icon: const Icon(Icons.plus_one),
+                ),
+                // 削除ボタン
+                IconButton(
+                  onPressed: () {
+                    lifeEventBox?.remove(lifeEvent.id);
+                    fetchLifeEvents();
+                  },
+                  icon: const Icon(Icons.delete),
                 ),
               ],
             ),
