@@ -78,7 +78,11 @@ class _LifeCounterPageState extends State<LifeCounterPage> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    lifeEvent.count++;
+                    lifeEventBox?.put(lifeEvent);
+                    fetchLifeEvents();
+                  },
                   icon: const Icon(Icons.plus_one),
                 ),
               ],
@@ -98,7 +102,7 @@ class _LifeCounterPageState extends State<LifeCounterPage> {
             ),
           );
           if (newLifeEvent != null) {
-            // ObjectBox に保存
+            // ObjectBoxに保存
             lifeEventBox?.put(newLifeEvent);
             // もう一度LifeEvent一覧を取得
             fetchLifeEvents();
