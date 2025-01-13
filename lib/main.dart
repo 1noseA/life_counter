@@ -56,57 +56,77 @@ class _LifeCounterPageState extends State<LifeCounterPage> {
       appBar: AppBar(
         title: const Text('人生カウンター'),
       ),
-      body: ListView.builder(
-        itemCount: lifeEvents.length,
-        itemBuilder: (context, index) {
-          final lifeEvent = lifeEvents[index];
-          return Padding(
-            padding: const EdgeInsets.all(8),
-            child: Row(
-              children: [
-                Expanded(
-                    child: Text(
-                  lifeEvent.title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                  ),
-                )),
-                Text(
-                  '${lifeEvent.count}',
-                  style: const TextStyle(
-                    fontSize: 16,
-                  ),
-                ),
-                // プラスボタン
-                IconButton(
-                  onPressed: () {
-                    lifeEvent.count++;
-                    lifeEventBox?.put(lifeEvent);
-                    fetchLifeEvents();
-                  },
-                  icon: const Icon(Icons.plus_one),
-                ),
-                // マイナスボタン
-                IconButton(
-                  onPressed: () {
-                    lifeEvent.count--;
-                    lifeEventBox?.put(lifeEvent);
-                    fetchLifeEvents();
-                  },
-                  icon: const Icon(Icons.exposure_neg_1),
-                ),
-                // 削除ボタン
-                IconButton(
-                  onPressed: () {
-                    lifeEventBox?.remove(lifeEvent.id);
-                    fetchLifeEvents();
-                  },
-                  icon: const Icon(Icons.delete),
-                ),
-              ],
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(8),
+              // 全削除ボタン
+              child: IconButton(
+                onPressed: () {
+                  lifeEventBox?.removeAll();
+                  fetchLifeEvents();
+                },
+                icon: const Icon(Icons.delete_forever),
+              ),
             ),
-          );
-        },
+          ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                final lifeEvent = lifeEvents[index];
+                return Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          lifeEvent.title,
+                          style: const TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        '${lifeEvent.count}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      // プラスボタン
+                      IconButton(
+                        onPressed: () {
+                          lifeEvent.count++;
+                          lifeEventBox?.put(lifeEvent);
+                          fetchLifeEvents();
+                        },
+                        icon: const Icon(Icons.plus_one),
+                      ),
+                      // マイナスボタン
+                      IconButton(
+                        onPressed: () {
+                          lifeEvent.count--;
+                          lifeEventBox?.put(lifeEvent);
+                          fetchLifeEvents();
+                        },
+                        icon: const Icon(Icons.exposure_neg_1),
+                      ),
+                      // 削除ボタン
+                      IconButton(
+                        onPressed: () {
+                          lifeEventBox?.remove(lifeEvent.id);
+                          fetchLifeEvents();
+                        },
+                        icon: const Icon(Icons.delete),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              childCount: lifeEvents.length,
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
